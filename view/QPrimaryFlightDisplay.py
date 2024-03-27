@@ -54,6 +54,7 @@ class QPrimaryFlightDisplay(QOpenGLWidget):
         z = self.zoom
         s = self.scale
         self.fg = palette.color(QPalette.ColorRole.WindowText)
+        self.crisnge = palette.color(QPalette.ColorRole.Window)
         self.fg2 = QPen(self.fg, 2 * s)
         self.fg3 = QPen(self.fg, 3 * s)
         self.fg3.setCapStyle(Qt.PenCapStyle.RoundCap)
@@ -65,7 +66,7 @@ class QPrimaryFlightDisplay(QOpenGLWidget):
         self.hg4 = QPen(self.hg, 4 * s)
         self.hg4.setJoinStyle(Qt.PenJoinStyle.RoundJoin)
         self.hg4.setCapStyle(Qt.PenCapStyle.RoundCap)
-        self.hg8 = QPen(self.hg, 8 * s)
+        self.hg8 = QPen(self.hg, 3 * s)
         self.hg8.setJoinStyle(Qt.PenJoinStyle.RoundJoin)
         self.hg8.setCapStyle(Qt.PenCapStyle.RoundCap)
         self.bsbr = palette.color(QPalette.ColorRole.Base)
@@ -410,6 +411,8 @@ class QPrimaryFlightDisplay(QOpenGLWidget):
         h = self.geometry().height()
         b = -self.roll
         s = self.scale
+        # self.crisnge.setAlpha(int(alpha))
+        # self.fg3.setColor(self.crisnge)
         self.fg.setAlpha(int(alpha))
         self.fg3.setColor(self.fg)
         painter.setPen(self.fg3)

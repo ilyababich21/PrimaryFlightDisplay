@@ -7,28 +7,7 @@ from PyQt6 import uic
 
 from resourse_path import resource_path
 from view.QPrimaryFlightDisplay import QPrimaryFlightDisplay
-from viewModel.video_vm import VideoReader
 from viewModel.vw_module import ViewModel
-
-
-class VideoPlayer(QWidget):
-    def __init__(self):
-        super().__init__()
-        # self.cap = cv2.VideoCapture(0)
-        self.layout = QVBoxLayout()
-        self.label = QLabel("Pizda")
-        self.layout.addWidget(self.label)
-        self.setLayout(self.layout)
-
-
-        self.video_reader=VideoReader()
-        self.video_reader.change_pixmap_signal.connect(self.update_image)
-        self.video_reader.start()
-
-    def update_image(self, qt_image):
-        pixmap = QPixmap.fromImage(qt_image)
-        self.label.setPixmap(pixmap)
-
 
 class PoletView(QMainWindow):
     def __init__(self):
@@ -40,10 +19,20 @@ class PoletView(QMainWindow):
 
         self.view_model.change_image.connect(self.update_image)
 
-
-
     def update_image(self,qt_image):
         self.video_player.image = qt_image
+        polet = self.view_model.get_polet()
+
+        self.video_player.roll=polet.roll
+        self.video_player.pitch=polet.pitch
+        self.video_player.skipskid=polet.skipskid
+        self.video_player.heading=polet.heading
+        self.video_player.airspeed=polet.airspeed
+        self.video_player.alt=polet.alt
+        self.video_player.vspeed=polet.vspeed
+        self.video_player.battery=polet.battery
+        self.video_player.arm=polet.arm
+
         self.video_player.update()
 
 
