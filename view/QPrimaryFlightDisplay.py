@@ -17,7 +17,6 @@ except ImportError:
     from PySide2.QtCore import *
     from PySide2.QtOpenGL import *
 
-
 if "NO_GL" in os.environ and os.environ["NO_GL"] == "1":
     print("NO_GL is set, using QWidget instead of QOpenGLWidget", file=sys.stderr)
     WidgetClass = QWidget
@@ -38,7 +37,7 @@ class QPrimaryFlightDisplay(QOpenGLWidget):
         self.battery = 0
         self.arm = False
         self.zoom = 1
-        self.image =None
+        self.image = None
         if WidgetClass == QOpenGLWidget:
             self.setAutoFillBackground(True)
             fmt = QSurfaceFormat()
@@ -200,7 +199,7 @@ class QPrimaryFlightDisplay(QOpenGLWidget):
                 x2 - x1 - 8 * s,
                 50 * s
             ),
-            Qt.AlignmentFlag.AlignCenter| Qt.AlignmentFlag.AlignRight,
+            Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignRight,
             str(float(round(abs(v), 1)))
         )
 
@@ -249,7 +248,7 @@ class QPrimaryFlightDisplay(QOpenGLWidget):
                     QLineF(x1, (y1 + y2) / 2 + pos, x1 + 15 * s, (y1 + y2) / 2 + pos))
             for j in range(-5, 6):
                 painter.drawLine(QLineF(x1, (y1 + y2) / 2 + pos + j / 5 * per,
-                                 x1 + 8 * s, (y1 + y2) / 2 + pos + j / 5 * per))
+                                        x1 + 8 * s, (y1 + y2) / 2 + pos + j / 5 * per))
         painter.restore()
         painter.setBrush(self.bsbr)
         painter.drawPolygon([
@@ -368,7 +367,7 @@ class QPrimaryFlightDisplay(QOpenGLWidget):
                         QRectF(
                             -20 * s, - x + 15 * s, 40 * s, 40 * s
                         ),
-                        Qt.AlignmentFlag.AlignCenter| Qt.AlignmentFlag.AlignCenter.AlignTop, t
+                        Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter.AlignTop, t
                     )
                 painter.drawLine(QLineF(0, - x, 0, - x + 15 * s))
             elif i == 9 or i == 27 or i == 45 or i == 63:
@@ -400,10 +399,12 @@ class QPrimaryFlightDisplay(QOpenGLWidget):
             size = 80 * s * ((1 / 4) * i + 1 / 2) * 10 / (5 + i)
             if -(4 * r * 1.1 * s) < p + i * r * s < 4 * r * 1.1 * s:
                 self.draw_marker(p + i * r * s,
-                                 size if (i % 2) == 0 else 40 * s, f"  {i*r//10}", 255 - 255 * abs(p + i * r * s) / (4 * r * 1.1 * s))
+                                 size if (i % 2) == 0 else 40 * s, f"  -{i * r // 10}",
+                                 255 - 255 * abs(p + i * r * s) / (4 * r * 1.1 * s))
             if -(4 * r * 1.1 * s) < p - i * 50 * s < 4 * r * 1.1 * s:
                 self.draw_marker(p - i * r * s,
-                                 size if (i % 2) == 0 else 40 * s, f"  {i*r//10}", 255 - 255 * abs(p - i * r * s) / (4 * r * 1.1 * s))
+                                 size if (i % 2) == 0 else 40 * s, f"  {i * r // 10}",
+                                 255 - 255 * abs(p - i * r * s) / (4 * r * 1.1 * s))
 
     def draw_marker(self, p, r, t="", alpha=128):
         painter = self.painter
@@ -427,7 +428,7 @@ class QPrimaryFlightDisplay(QOpenGLWidget):
         painter.setTransform(trans)
         painter.setPen(self.fg)
         painter.setFont(self.font16)
-        painter.drawText(int(r),int( p + 8 * s), t)
+        painter.drawText(int(r), int(p + 8 * s), t)
         painter.resetTransform()
         self.fg.setAlpha(255)
         self.fg3.setColor(self.fg)
@@ -496,7 +497,7 @@ class QPrimaryFlightDisplay(QOpenGLWidget):
         painter.drawPath(path)
         painter.setPen(self.hg)
         painter.setBrush(self.hg)
-        painter.drawEllipse(int(w / 2 - 4),int( h / 2 - 4), int(8 * s),int( 8 * s))
+        painter.drawEllipse(int(w / 2 - 4), int(h / 2 - 4), int(8 * s), int(8 * s))
 
     def compute_horizon(self, p, b):
         w = self.geometry().width()
@@ -585,15 +586,11 @@ class QPrimaryFlightDisplay(QOpenGLWidget):
         print(len(points))
         painter.drawPolygon(points)
 
-
     def draw_picture(self):
         painter = self.painter
         # image = QImage("photo.jpg")
         if self.image:
-            painter.drawImage(QRect(0, 0, self.geometry().width(), self.geometry().height()),self.image)
-
-
-
+            painter.drawImage(QRect(0, 0, self.geometry().width(), self.geometry().height()), self.image)
 
 
 def update():
@@ -602,19 +599,19 @@ def update():
     pfd.pitch = 0
     # pfd.heading = random.randint(0,90)
     pfd.heading = 25
-    pfd.airspeed = random.randint(25,50)
-    pfd.vspeed = random.random() # variometr
-    pfd.alt = random.randint(500,700) # altmeter высотаметр
-    pfd.skipskid = random.randint(-5,7) # индикатор скольжения, с английского "скитаться"
+    pfd.airspeed = random.randint(25, 50)
+    pfd.vspeed = random.random()  # variometr
+    pfd.alt = random.randint(500, 700)  # altmeter высотаметр
+    pfd.skipskid = random.randint(-5, 7)  # индикатор скольжения, с английского "скитаться"
 
-    pfd.arm=True
+    pfd.arm = True
     # Redraw the display
     pfd.update()
 
 
-
 if __name__ == '__main__':
     import sys
+
     app = QApplication(sys.argv)
     pfd = QPrimaryFlightDisplay()
 

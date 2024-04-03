@@ -19,6 +19,7 @@ class VideoReader(QThread):
     def run(self):
 
         cap = cv2.VideoCapture(resource_path("media/polet.mp4"))
+        # cap = cv2.VideoCapture(0)
         while True:
             ret, frame = cap.read()
             if ret:
@@ -33,32 +34,4 @@ class VideoReader(QThread):
                 break
 
 
-class SensorsReader(QThread):
-    params = pyqtSignal(Polet)
 
-    def __init__(self):
-        super().__init__()
-        self.polet = Polet()
-
-    def run(self):
-        self.params.emit(self.polet)
-        while True:
-            # time.sleep(1)
-            self.update_params()
-            self.params.emit(self.polet)
-            time.sleep(0.5)
-
-    def update_params(self):
-        # Update the display of the vehicle state
-        self.polet.roll =random.uniform(-1, 1)
-        self.polet.pitch = random.uniform(-1, 1)
-        # self.polet.pitch = random.random()
-        # pfd.heading = random.randint(0,90)
-        self.polet.heading = random.randint(20, 50)
-        self.polet.airspeed = random.randint(25, 50)
-        self.polet.vspeed = random.random()  # variometr
-        self.polet.alt = random.randint(500, 700)  # altmeter высотаметр
-        # self.polet.skipskid = 5  # индикатор скольжения, с английского "скитаться"
-        self.polet.skipskid = random.randint(-5, 7)  # индикатор скольжения, с английского "скитаться"
-        self.polet.battery = 80
-        self.polet.arm = True
